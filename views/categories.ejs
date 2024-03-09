@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Categories</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f8f9fa;
+            color: #333;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        h2 {
+            text-align: center;
+            margin-bottom: 20px;
+            color: #007bff;
+        }
+
+        form {
+            margin-bottom: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center; 
+        }
+
+        input[type="text"] {
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            margin-right: 10px;
+        }
+
+        button {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        button.edit {
+            background-color: #28a745;
+            color: #fff;
+        }
+
+        button.delete {
+            background-color: #dc3545;
+            color: #fff;
+            padding-top: 12px; 
+        }
+
+        button.update {
+            background-color: #007bff;
+            color: #fff;
+        }
+
+        button:hover {
+            opacity: 0.8;
+        }
+
+        ul {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        li {
+            padding: 10px 0;
+            border-bottom: 1px solid #ccc;
+            display: flex;
+            align-items: center;
+            justify-content: space-between; 
+        }
+
+        li:last-child {
+            border-bottom: none;
+        }
+
+        .edit-form {
+            display: none;
+            margin-left: 10px;
+        }
+
+        .edit-form input[type="text"] {
+            padding: 5px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            margin-right: 5px;
+        }
+
+        .button-group {
+            display: flex;
+            align-items: center;
+        }
+
+        .button-group form {
+            margin-left: 10px; 
+        }
+
+        a {
+            text-decoration: none; 
+            color: inherit; 
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Categories</h2>
+        <form action="/categories" method="post">
+            <input type="text" name="name" placeholder="Enter Category Name">
+            <button type="submit">Add Category</button>
+        </form>
+        <ul>
+            <% categories.forEach(category => { %>
+                <li>
+                    <a href="/products?categoryId=<%= category.id %>"><%= category.name %></a>
+                    <div class="button-group">
+                        <button class="edit" onclick="toggleEditForm('<%= category.id %>')">Edit</button>
+                        <form class="edit-form" id="editForm<%= category.id %>" action="/categories/update/<%= category.id %>" method="post">
+                            <input type="text" name="name" placeholder="New Name">
+                            <button class="update" type="submit">Update</button>
+                        </form>
+                        <form action="/categories/delete/<%= category.id %>" method="post">
+                            <button class="delete" type="submit">Delete</button>
+                        </form>
+                    </div>
+                </li>
+            <% }); %>
+        </ul>
+    </div>
+    <script>
+        function toggleEditForm(categoryId) {
+            const editForm = document.getElementById('editForm' + categoryId);
+            if (editForm.style.display === 'none') {
+                editForm.style.display = 'flex';
+            } else {
+                editForm.style.display = 'none';
+            }
+        }
+    </script>
+</body>
+</html>
